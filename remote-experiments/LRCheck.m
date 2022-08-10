@@ -1,3 +1,9 @@
+% This function executes a screening protocol to confirm that the participant 
+% is wearing their headphones in the correct orientation, with the left 
+% channel going to the left ear.
+% 
+% Sean R. Anderson - sean.hearing@gmail.com
+
 function LRCheck(hndl,start)
     % User GUI for familarization protocol
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
