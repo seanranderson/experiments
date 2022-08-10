@@ -1,4 +1,10 @@
-function RemotePFLAN(npanel)
+% This is the main script to conduct the phonological fusion experiment.
+% It is broken down into panels (i.e., experimental screens) that will 
+% be presented to the participant. 
+% 
+% Sean R. Anderson - sean.hearing@gmail.com
+
+function RemotePhonoFus(npanel)
 
 if ~exist('npanel','var')
     npanel = 5;
@@ -11,10 +17,8 @@ switch npanel
         hndl.Ramp = 0;
         hndl.SRate = 44100;
         hndl.StimulusPath = '../PhonoFus/Stimuli/';
-        hndl.CalibStim = audioread('Stimuli/PinkNoise.wav'); %audioread('../Stimuli/PinkNoise.wav');
+        hndl.CalibStim = audioread('Stimuli/PinkNoise.wav');
         hndl.RMSCalib = rms(hndl.CalibStim)^2; % not used...
-% %         hndl.CalLeft = rms((hndl.CalibStim ./ rms(hndl.CalibStim)) * 5.610e-3) ^ 2; % factor at end determined by calibration in booth 072421
-% %         hndl.CalRight = rms((hndl.CalibStim ./ rms(hndl.CalibStim)) * 6.441e-3) ^ 2; % factor at end determined by calibration in booth 072421
         hndl.CalLeft = 9.976e-3; % RMS factor determined during calibration 65 dB(A)
         hndl.CalRight = 1.145e-2;
         hndl.PosWords= {'Bed','Led','Red','Bled','Bread',...
@@ -22,13 +26,7 @@ switch npanel
         'Go','Low','Row','Glow','Grow'};
         set(gcf, 'UserData', hndl);
         
-% %         str.data = {'Great job!',...
-% %             "Now you're ready to begin the next part of the study."};
-% %         str.pos = [0.2 0.3];
-% %         str.siz = [0.6 0.35];
-% % 
-% %         GenGUI(str);
-        RemotePFLAN(2);
+        RemotePhonoFus(2);
         
     case 2
         
@@ -102,7 +100,7 @@ switch npanel
         
         hndl = get(gcf, 'UserData');
                         
-        practicemat = GenPFLANTrials(hndl.PosWords,[100 100],1);
+        practicemat = GenPhonoFusTrials(hndl.PosWords,[100 100],1);
         practicemat = practicemat{1}(str2num(cat(1,practicemat{1}{:,2})) == 1,:);
         [~,ia] = unique(practicemat(:,7));
         practicemat = practicemat(ia,:);
@@ -166,7 +164,7 @@ switch npanel
         
         hndl.RunNum = 200;
         
-        practicemat = GenPFLANTrials(hndl.PosWords,[40 40],1);
+        practicemat = GenPhonoFusTrials(hndl.PosWords,[40 40],1);
         practicemat = practicemat{1}(str2num(cat(1,practicemat{1}{:,2})) == 1,:);
         [~,ia] = unique(practicemat(:,7));
         practicemat = practicemat(ia,:);
@@ -230,7 +228,7 @@ switch npanel
         
         hndl.RunNum = 300;
         
-        practicemat = GenPFLANTrials(hndl.PosWords,[-1 -1],1);
+        practicemat = GenPhonoFusTrials(hndl.PosWords,[-1 -1],1);
         tmp1 = practicemat{1}(str2num(cat(1,practicemat{1}{:,2})) == 4,:);
         tmp2 = practicemat{1}(str2num(cat(1,practicemat{1}{:,2})) == 1,:);
         practicemat = cat(1,tmp1(randperm(length(tmp1),10),:),tmp2(randperm(length(tmp2),10),:));
@@ -252,13 +250,6 @@ switch npanel
         hndl.npanel = hndl.npanel + 1;
         
         set(gcf, 'UserData', hndl);
-        
-% %         yLeft = audioread([hndl.StimulusPath ...
-% %             sprintf('%s.wav',hndl.PosWords{str2num(hndl.Conditions{1,1})})]);
-% %         vLeft = [yLeft yLeft];
-% %         yRight =  audioread([hndl.StimulusPath ...
-% %             sprintf('%s.wav',hndl.PosWords{str2num(hndl.Conditions{1,2})})]);
-% %         vRight = [yRight yRight];
         
         LoadStimulus;
 
@@ -290,7 +281,7 @@ switch npanel
         hndl.nBlocks = 10; 
         
         % Generate experiment trials
-        hndl.trialmat = GenPFLANTrials(hndl.PosWords,DRs,hndl.nBlocks);
+        hndl.trialmat = GenPhonoFusTrials(hndl.PosWords,DRs,hndl.nBlocks);
         hndl.RunNum = 1;
         hndl.Conditions = cat(2,hndl.trialmat{hndl.RunNum}(:,7),... % left word index
             hndl.trialmat{hndl.RunNum}(:,8),... % right word index
@@ -302,7 +293,7 @@ switch npanel
         
         set(gcf, 'UserData', hndl);
         
-        RemotePFLAN(16);
+        RemotePhonoFus(16);
         
     case 16
                 
@@ -381,11 +372,11 @@ switch npanel
         if hndl.RunNum > hndl.nBlocks
             hndl.npanel = 21 + hndl.panadj;
             set(gcf, 'UserData', hndl);
-            RemotePFLAN(21);
+            RemotePhonoFus(21);
         else
             hndl.npanel = 16 + hndl.panadj;
             set(gcf, 'UserData', hndl);
-            RemotePFLAN(16);
+            RemotePhonoFus(16);
         end
         
     case 21
