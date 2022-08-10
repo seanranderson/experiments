@@ -6,7 +6,7 @@ Code to replicate auditory experiments in MATLAB
 The goal of this repository is to make code available from experiments that 
 I have conducted for researchers (or readers) who may want to replicate 
 those experiments. They were conducted using custom MATLAB software. When 
-papers are published using this code, they will be mentioned within each 
+papers are published that used this code, they will be mentioned within each 
 sub-folder. Please forgive minimally annotated code (e.g., missing function 
 descriptions) as this software is still being migrated from my devices to GitHub. 
 
