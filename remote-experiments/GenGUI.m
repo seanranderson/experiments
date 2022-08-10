@@ -1,3 +1,14 @@
+% This is a generic function used to share instructions or information with 
+% a participant during an experiment. It has several buttons. "Next" allows
+% the participant to progress to the next panel of information. "Help" pulls 
+% a panel using the `Help.m` function providing any information the 
+% participant should have if there are technical issues. This function is 
+% intended to be called repeatedly throughout an experimental protocol and 
+% integrated with other functions relevant to an experiment used to complete 
+% specific tasks.
+% 
+% Sean R. Anderson - sean.hearing@gmail.com
+
 function GenGUI(str,img,btn)
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
