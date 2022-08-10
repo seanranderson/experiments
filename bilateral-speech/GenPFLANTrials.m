@@ -1,4 +1,4 @@
-function [trialmat,block_idx] = GenPFLANTrials(Words,DRs,nBlocks)
+function [trialmat,block_idx] = GenPhonoFusTrials(Words,DRs,nBlocks)
 %% This function generates the trial structure for the PFLAN experiment. 
 % 
 % It takes two inputs:
