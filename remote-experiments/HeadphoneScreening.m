@@ -1,3 +1,8 @@
+% This function executes a screening protocol to confirm that the participant 
+% is using headphones and not speakers while participating in experiments.
+% 
+% Sean R. Anderson - sean.hearing@gmail.com
+
 function HeadphoneScreening(hndl,start)
     % User GUI for familarization protocol
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
