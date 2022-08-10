@@ -1,4 +1,4 @@
-function PhonoFus_20AFC(hndl,start)
+function PhonoFus_15AFC(hndl,start)
     % User GUI for familarization protocol
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Show Experimental Screen, Run Experiment
@@ -68,28 +68,6 @@ end
 %% set up experimental screen
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-% %     uicontrol('Style','text','String','I heard:', ...
-% %         'FontWeight', 'bold', ...
-% %         'backgroundcolor',hndl.colors.gray,...
-% %         'FontSize',40,...
-% %         'Units', 'normalized', 'Position',[0.2,0.9,0.2,0.075]);
-% % 
-% %     hndl.ExpButtons.OneWords = uicontrol('Style', 'pushbutton', ...
-% %         'String', '1 Word', ...
-% %         'FontWeight', 'bold', ...
-% %         'FontSize', 40, ...
-% %         'backgroundcolor',hndl.colors.blue, ...
-% %         'callback',{@UpdateResponse,-1}, ...
-% %         'Units', 'normalized', 'Position',[0.1,0.8,0.2,0.1]);
-% % 
-% %     hndl.ExpButtons.TwoWords = uicontrol('Style', 'pushbutton', ...
-% %         'String', '2 Words', ...
-% %         'FontWeight', 'bold', ...
-% %         'FontSize', 40, ...
-% %         'backgroundcolor',hndl.colors.blue, ...
-% %         'callback',{@UpdateResponse,-2}, ...
-% %         'Units', 'normalized', 'Position',[0.3,0.8,0.2,0.1]);
-
     uicontrol('Style','text','String','Choose up to 2 words that you heard.', ...
         'FontWeight', 'bold', ...
         'backgroundcolor',hndl.colors.gray,...
@@ -113,13 +91,6 @@ end
             'callback',{@StopExp,0}, ...
             'Units', 'normalized', 'Position',[0.885,0.025,0.1,0.05]);
     end
-
-% %     uicontrol('Style','text','String','They were:', ...
-% %         'FontWeight', 'bold', ...
-% %         'backgroundcolor',hndl.colors.gray,...
-% %         'FontSize',40,...
-% %         'Units', 'normalized', ...
-% %         'Position',[0.33,yoffset+3*heightButton+0.125,0.3,0.1]);
 
     % Row 1
 
@@ -276,65 +247,6 @@ end
         'callback',{@UpdateResponse,15}, ...
         'Units', 'normalized', 'Position',[xoffset+4*widthButton,yoffset+1*heightButton,...
             widthButton,heightButton]);
-
-    % % Row 4
-    %     
-    % hndl.ExpButtons.Word16 = uicontrol('Style', 'pushbutton', ...
-    %     'FontWeight', 'bold', ...
-    %     'String',hndl.PosWords{16},...
-    %     'FontSize', 40, ...
-    %     'backgroundcolor',hndl.colors.blue, ...
-    %     'Enable','on', ...
-    %     'callback',{@UpdateResponse,16}, ...
-    %     'Units', 'normalized', 'Position',[xoffset,yoffset+0*heightButton,...
-    %         widthButton,heightButton]);
-    % 
-    % hndl.ExpButtons.Word17 = uicontrol('Style', 'pushbutton', ...
-    %     'FontWeight', 'bold', ...
-    %     'String',hndl.PosWords{17},...
-    %     'FontSize', 40, ...
-    %     'backgroundcolor',hndl.colors.blue, ...
-    %     'Enable','on', ...
-    %     'callback',{@UpdateResponse,17}, ...
-    %     'Units', 'normalized', 'Position',[xoffset+widthButton,yoffset+0*heightButton,...
-    %         widthButton,heightButton]);
-    % 
-    % hndl.ExpButtons.Word18 = uicontrol('Style', 'pushbutton', ...
-    %     'FontWeight', 'bold', ...
-    %     'String',hndl.PosWords{18},...
-    %     'FontSize', 40, ...
-    %     'backgroundcolor',hndl.colors.blue, ...
-    %     'Enable','on', ...
-    %     'callback',{@UpdateResponse,18}, ...
-    %     'Units', 'normalized', 'Position',[xoffset+2*widthButton,yoffset+0*heightButton,...
-    %         widthButton,heightButton]);
-    % 
-    % hndl.ExpButtons.Word19 = uicontrol('Style', 'pushbutton', ...
-    %     'FontWeight', 'bold', ...
-    %     'String',hndl.PosWords{19},...
-    %     'FontSize', 40, ...
-    %     'backgroundcolor',hndl.colors.blue, ...
-    %     'Enable','on', ...
-    %     'callback',{@UpdateResponse,19}, ...
-    %     'Units', 'normalized', 'Position',[xoffset+3*widthButton,yoffset+0*heightButton,...
-    %         widthButton,heightButton]);
-    %         
-    % hndl.ExpButtons.Word20 = uicontrol('Style', 'pushbutton', ...
-    %     'FontWeight', 'bold', ...
-    %     'String',hndl.PosWords{20},...
-    %     'FontSize', 40, ...
-    %     'backgroundcolor',hndl.colors.blue, ...
-    %     'Enable','on', ...
-    %     'callback',{@UpdateResponse,20}, ...
-    %     'Units', 'normalized', 'Position',[xoffset+4*widthButton,yoffset+0*heightButton,...
-    %         widthButton,heightButton]);
-
-    %     hndl.TDT = TDTInit(48000);
-    %     % set PA5 attenuation
-    %     atten = [19.7 19.4];
-    %     % TRO - 5 dB
-    %     atten = [24.7 24.4];
-    %     TDTSetPA5Atten(hndl.TDT,atten);
     
     % Create progress bar
     uicontrol('Style','text','String','Progress', ...
@@ -384,86 +296,19 @@ end
             hndl.wordList(hndl.wordList == input) = [];
         end
     elseif input < 0
-% %         buttonDataOneWords = get(hndl.ExpButtons.OneWords);
-% %         buttonDataTwoWords = get(hndl.ExpButtons.TwoWords);
-% %         if input == -1
-% %             c = buttonDataOneWords.BackgroundColor;            
-% %             if c == hndl.colors.blue
-% %                 hndl.nWords = 1;
-% %                 set(hndl.ExpButtons.OneWords,'BackgroundColor',hndl.colors.red);
-% %                 set(hndl.ExpButtons.TwoWords,'BackgroundColor',hndl.colors.blue);
-% %             elseif c == hndl.colors.red
-% %                 hndl.nWords = 0;
-% %                 set(hndl.ExpButtons.OneWords,'BackgroundColor',hndl.colors.blue);
-% %             end
-% %         elseif input == -2
-% %             c = buttonDataTwoWords.BackgroundColor;            
-% %             if c == hndl.colors.blue
-% %                 hndl.nWords = 2;
-% %                 set(hndl.ExpButtons.TwoWords,'BackgroundColor',hndl.colors.red);
-% %                 set(hndl.ExpButtons.OneWords,'BackgroundColor',hndl.colors.blue);
-% %             elseif c == hndl.colors.red
-% %                 hndl.nWords = 0;
-% %                 set(hndl.ExpButtons.TwoWords,'BackgroundColor',hndl.colors.blue);
-% %             end
-% %         end
+        % Do nothing
     end
     
     
-% %     if length(hndl.wordList) ~= hndl.nWords
     if length(hndl.wordList) > 2 || isempty(hndl.wordList)
         set(hndl.ExpButtons.Submit,'BackgroundColor',[1 1 1]);        
         set(hndl.ExpButtons.Submit,'Enable','off');
-% %     elseif hndl.nWords == 0
-% % % %         % Do nothing - sub has not chosen yet
     else
         set(hndl.ExpButtons.Submit,'BackgroundColor',hndl.colors.green);
         set(hndl.ExpButtons.Submit,'Enable','on');
     end
-    
-    
-    
+        
     set(gcf, 'UserData', hndl);
-    
-    
-    
-    
-    
-%     
-%     if input ~= 0
-%         stim = AddWaveformITD([hndl.PT hndl.PT],sign(input)*...
-%             hndl.PracticeITDs(abs(input)),hndl.SRate);
-%     else
-%         stim = AddWaveformITD([hndl.PT hndl.PT],0,hndl.SRate);
-%     end
-%     
-% %    Add noise
-%         Nx = length(stim);
-%         [noise,SRate]=audioread('..\Stimuli\LFDichoticNoise2.wav');
-% %        [noise,SRate]=audioread('../Stimuli/LFDichoticNoise2.wav'); % Mac
-%         noise=resample(noise,hndl.SRate,SRate);
-%         Nnoise = length(noise);
-%         noise = noise * 10^(15.7/20); % start w/ 20 dB quieter noise
-% 
-% 
-%         Npad = ceil((Nnoise - Nx)/2);
-%         padder = zeros(Npad,2);
-%         stim = [padder;stim;padder];
-%         stim = stim(1:Nnoise,:);
-%         stim = stim + noise;
-%         
-%         stim = AddTemporalRamps(stim,10/1000,hndl.SRate,2);
-%     
-% 
-% %         if hndl.TDT.on == 0
-% %             stim=[stim(:,2) stim(:,1)];
-% %             soundsc(stim,48000)
-%     %         wavplay(x,hndl.SRate);
-%     %         wavplay(x,SRate);
-% %         else
-%     %         TDTPlayBlocking(hndl.TDT,x,[1 2],hndl.SRate);
-%             TDTPlayBlocking(hndl.TDT,stim,[1 2],hndl.SRate);
-% %        end
     
     end
     
@@ -475,34 +320,11 @@ end
         for ii = 1:length(hndl.PosWords)
             eval(sprintf('set(hndl.ExpButtons.Word%d,''BackgroundColor'',hndl.colors.blue);',ii));
         end
-% %         set(hndl.ExpButtons.OneWords,'BackgroundColor',hndl.colors.blue);
-% %         set(hndl.ExpButtons.TwoWords,'BackgroundColor',hndl.colors.blue);
         
         PhonoFus_UpdateScore;
     
     end
     
-    function UseTDT(varargin)
-
-        hndl = get(gcf, 'UserData');
-
-    %     if hndl.UseTDT==1
-        % initialize the TDT
-        hndl.TDT = TDTInit(48000);
-        % set PA5 attenuation
-        atten = [19.7 19.4]; % dB
-        TDTSetPA5Atten(hndl.TDT,atten);
-    %         hndl.TDT.on = 1;
-    %     else
-        % close TDT hardware
-        %TDTClose(hndl.TDT);
-        hndl.TDT.on = 0;
-    %     end
-
-        set(gcf, 'UserData', hndl);
-
-    end
-
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% stops/aborts experiment
     function StopExp(obj,events,type)    
