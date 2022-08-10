@@ -8,6 +8,16 @@
 % specific tasks.
 % 
 % Sean R. Anderson - sean.hearing@gmail.com
+% 
+% Inputs:   str: Structure containing instructions to be displayed with data 
+%               (string), pos (2 element column matrix), and siz (2 column 
+%               matrix) fields.
+%           img: Structure containing image files to be displayed with 
+%               filename (string), pos (2 element column vector), and type 
+%               (string) fields
+%           btn: Structure containing buttons to be displayed with n 
+%               (double), text (string), callback (string), pos (2 element 
+%               column vector), and siz (2 element column vector)
 
 function GenGUI(str,img,btn)
 
@@ -23,6 +33,7 @@ function GenGUI(str,img,btn)
 %% Generate text, images, and buttons
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
+    % Display desired text
     uicontrol('Style','text',...
         'String',str.data, ...
         'backgroundcolor',hndl.colors.gray,...
@@ -31,6 +42,7 @@ function GenGUI(str,img,btn)
         'Units', 'normalized', 'Position',[str.pos str.siz],...
         'HorizontalAlignment','Center');
     
+    % Display desired images
     if exist('img','var')
         if ~isempty(img)
             h = subplot(2, 1, 2);
@@ -40,6 +52,7 @@ function GenGUI(str,img,btn)
         end
     end
     
+    % Display desired buttons
     if exist('btn','var')
         if ~isempty(btn)
             for ii = 1:btn.n
@@ -80,6 +93,7 @@ function GenGUI(str,img,btn)
         'callback',{@Help,0}, ...
         'Units', 'normalized', 'Position',[0.115,0.1,0.1,0.052]);
 
+    % Store data to handle
     set(gcf, 'UserData', hndl);
     
 end
