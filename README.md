@@ -7,7 +7,8 @@ The goal of this repository is to make code available from experiments that
 I have conducted for researchers (or readers) who may want to replicate 
 those experiments. They were conducted using custom MATLAB software. When 
 papers are published using this code, they will be mentioned within each 
-sub-folder.
+sub-folder. Please forgive minimally annotated code (e.g., missing function 
+descriptions) as this software is still being migrated from my devices to GitHub. 
 
 This repository stores updated code from experiments I conducted in MATLAB 
 during graduate school and my postdoctoral fellowship. They are fully automated,
