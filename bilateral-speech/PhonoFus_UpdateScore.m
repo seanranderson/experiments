@@ -1,9 +1,7 @@
 function PhonoFus_UpdateScore
 
     hndl = get(gcf, 'UserData'); % get variables structure
-    
-    hndl.Token
-    
+        
     % Record response time
     hndl.ResponseTime = toc;
     
@@ -34,20 +32,17 @@ function PhonoFus_UpdateScore
         'Position',[0.05 0.675 ...
         0.9*hndl.Trial/size(hndl.Conditions,1) 0.05]);
     
+    % Store word(s) reported
     PresWord1Text = hndl.PosWords{str2num(hndl.Conditions{hndl.Trial,1})};
-%     if hndl.Conditions{hndl.Trial,4} == 0
-%         PresWord2Text = '';
-%     else
     PresWord2Text = hndl.PosWords{str2num(hndl.Conditions{hndl.Trial,2})};
-%     end
     RespWord1Text = hndl.PosWords{str2num(hndl.Response{hndl.Trial,1})};
     if str2num(hndl.Response{hndl.Trial,2}) == 0
         RespWord2Text = '';
     else
         RespWord2Text = hndl.PosWords{str2num(hndl.Response{hndl.Trial,2})};
     end
-    
-    % fprintf(hndl.fid,'ID,Run,Trial,Word1,Word2,nPresented,TrialType,VocLeft,VocRight,Rho,ILD,Resp1,Resp2,nResponsed,LeftToken,RightToken,RTimeSec,PresWord1Text,PresWord2Text,RespWord1Text,RespWord2Text\n');
+
+    % Write output to text file
     fprintf(hndl.fid,'%s,%d,%d,%s,%s,%d,%s,%s,%s,%s,%s,%s,%d,%d,%0.2f,%s,%s,%s,%s\n',...
         hndl.SubID,hndl.RunNum,hndl.Trial,...
         hndl.Conditions{hndl.Trial,1:2},nWords,...
@@ -184,112 +179,48 @@ function PhonoFus_UpdateScore
             hndl.Token = [randperm(2,1) randperm(2,1)]; % dichotic trial
         end
         
-% % %         if ~isempty(hndl.Conditions{hndl.Trial,4})
-% % %             yLeft = audioread([hndl.StimulusPath ...
-% % %                 sprintf('%s.wav',...
-% % %                 hndl.PosWords{str2num(hndl.Conditions{hndl.Trial,1})})]);% add token
-% % %             if ~isempty(str2num(hndl.Conditions{hndl.Trial,4})) % If not a string
-% % %                 vLeft = audioread(...
-% % %                     [hndl.StimulusPath sprintf('Vocoded/%s depth/%s_voc_16_of_16ch_LNN_e_600_comp_%s_s_0.wav',...
-% % %                     hndl.Conditions{hndl.Trial,4},...
-% % %                     hndl.PosWords{str2num(hndl.Conditions{hndl.Trial,1})},...
-% % %                     hndl.Conditions{hndl.Trial,4})]); % add token
-% % %                 vLeft = [vLeft vLeft];
-% % % % Online vovoding
-% % % %                 env = AnalyzeSignal([yLeft yLeft],hndl.vocoder);
-% % % %                 vLeft = NoiseSynthesis(env,hndl.vocoder,1,0);
-% % %             else
-% % %                 vLeft = [yLeft yLeft];
-% % %             end
-% % %             vLeft = hndl.RMSCalib/rms(vLeft(:,1)) * vLeft;
-% % %         else
-% % %             vLeft = [zeros(23695,1) zeros(23695,1)];
-% % %         end
-% % %         if ~isempty(hndl.Conditions{hndl.Trial,5})
-% % %            yRight =  audioread([hndl.StimulusPath ...
-% % %                 sprintf('%s.wav',...
-% % %                 hndl.PosWords{str2num(hndl.Conditions{hndl.Trial,2})})]); % Add token FIX THIS
-% % %             if ~isempty(str2num(hndl.Conditions{hndl.Trial,5})) % If not a string
-% % %                 vRight = audioread(...
-% % %                     [hndl.StimulusPath sprintf('Vocoded/%s depth/%s_voc_16_of_16ch_LNN_e_600_comp_%s_s_0.wav',...
-% % %                     hndl.Conditions{hndl.Trial,5},...
-% % %                     hndl.PosWords{str2num(hndl.Conditions{hndl.Trial,2})},...
-% % %                     hndl.Conditions{hndl.Trial,5})]); % add token FIX THIS
-% % %                 vRight = [vRight vRight];
-% % %                 % Online vocoding
-% % %                 % env = AnalyzeSignal([yRight yRight],hndl.vocoder);
-% % %                 % vRight = NoiseSynthesis(env,hndl.vocoder,1,0);
-% % %             else
-% % %                 vRight = [yRight yRight];
-% % %             end
-% % %             vRight = hndl.RMSCalib/rms(vRight(:,1)) * vRight;
-% % %         else
-% % %             vRight = [zeros(23695,1) zeros(23695,1)];
-% % %         end
-
-    % Load stimuli - a little clunky - this should be its own function
-    if str2double(hndl.Conditions{hndl.Trial,5}) > 0 % Load vocoded
-        vLeft = audioread(...
-            [hndl.StimulusPath sprintf('Vocoded/%s depth/%s_%d_voc_16_of_16ch_LNN_e_600_comp_%s_s_0.wav',... % eventually ../Stimuli/Vocoded/%s depth/%s_voc_16_of_16ch_LNN_e_600_comp_%s_s_0_%d.wav
-            hndl.Conditions{hndl.Trial,4},...
-            hndl.PosWords{str2num(hndl.Conditions{hndl.Trial,1})},...
-            hndl.Token(1),...
-            hndl.Conditions{hndl.Trial,4})]); % add hndl.Tokens(1,1) here for any trial type
-        vLeft = [vLeft vLeft];
-    else % Load unprocessed
-        yLeft = audioread([hndl.StimulusPath ...
-            sprintf('%s_%d.wav',hndl.PosWords{str2num(hndl.Conditions{hndl.Trial,1})},hndl.Token(1))]);
-        vLeft = [yLeft yLeft];
-    end
-    if str2double(hndl.Conditions{hndl.Trial,5}) > 0 % Load vocoded
-        vRight = audioread(...
-            [hndl.StimulusPath sprintf('Vocoded/%s depth/%s_%d_voc_16_of_16ch_LNN_e_600_comp_%s_s_0.wav',...
-            hndl.Conditions{hndl.Trial,5},...
-            hndl.PosWords{str2num(hndl.Conditions{hndl.Trial,2})},...
-            hndl.Token(2),...
-            hndl.Conditions{hndl.Trial,5})]);
-        vRight = [vRight vRight]; 
-    else % Load unprocessed
-       yRight =  audioread([hndl.StimulusPath ...
-            sprintf('%s_%d.wav',hndl.PosWords{str2num(hndl.Conditions{hndl.Trial,2})},hndl.Token(2))]);
-       vRight = [yRight yRight];
-    end
+        % Load stimuli - a little clunky - this should be its own function
+        if str2double(hndl.Conditions{hndl.Trial,5}) > 0 % Load vocoded
+            vLeft = audioread(...
+                [hndl.StimulusPath sprintf('Vocoded/%s depth/%s_%d_voc_16_of_16ch_LNN_e_600_comp_%s_s_0.wav',... % eventually ../Stimuli/Vocoded/%s depth/%s_voc_16_of_16ch_LNN_e_600_comp_%s_s_0_%d.wav
+                hndl.Conditions{hndl.Trial,4},...
+                hndl.PosWords{str2num(hndl.Conditions{hndl.Trial,1})},...
+                hndl.Token(1),...
+                hndl.Conditions{hndl.Trial,4})]); % add hndl.Tokens(1,1) here for any trial type
+            vLeft = [vLeft vLeft];
+        else % Load unprocessed
+            yLeft = audioread([hndl.StimulusPath ...
+                sprintf('%s_%d.wav',hndl.PosWords{str2num(hndl.Conditions{hndl.Trial,1})},hndl.Token(1))]);
+            vLeft = [yLeft yLeft];
+        end
+        if str2double(hndl.Conditions{hndl.Trial,5}) > 0 % Load vocoded
+            vRight = audioread(...
+                [hndl.StimulusPath sprintf('Vocoded/%s depth/%s_%d_voc_16_of_16ch_LNN_e_600_comp_%s_s_0.wav',...
+                hndl.Conditions{hndl.Trial,5},...
+                hndl.PosWords{str2num(hndl.Conditions{hndl.Trial,2})},...
+                hndl.Token(2),...
+                hndl.Conditions{hndl.Trial,5})]);
+            vRight = [vRight vRight]; 
+        else % Load unprocessed
+            yRight =  audioread([hndl.StimulusPath ...
+                sprintf('%s_%d.wav',hndl.PosWords{str2num(hndl.Conditions{hndl.Trial,2})},hndl.Token(2))]);
+            vRight = [yRight yRight];
+        end
 
         vLeft = resample(vLeft,hndl.SRate,44100);
         vRight = resample(vRight,hndl.SRate,44100);
-% %         % Old 
-% %         hndl.TrialStimulus = AddTemporalRamps([10^(hndl.CalLeft/20)*vLeft(:,1) ...
-% %             10^(hndl.CalRight/20)*vRight(:,2)],hndl.Ramp/1000,hndl.SRate,2);
-        
-% %         % Format taken from ToneCalibration.m and PNCalibration.m
-% %         hndl.TrialStimulus = AddTemporalRamps([(vLeft(:,1) ./ rms(vLeft(:,1))) * hndl.CalLeft ...
-% %             (vRight(:,2) ./ rms(vRight(:,2))) * hndl.CalRight],hndl.Ramp/1000,hndl.SRate,2);
+    
+        hndl.TrialStimulus = AddTemporalRamps([vLeft(:,1) vRight(:,2)],...
+            hndl.Ramp/1000,hndl.SRate,2);
 
-% %     DiffLevel = [20*log10(hndl.CalLeft) - 20*log10(rms(vLeft(:,1))^2) ...
-% %         20*log10(hndl.CalRight) - 20*log10(rms(vRight(:,2))^2)];
-% %     hndl.TrialStimulus = AddTemporalRamps([10^(DiffLevel(1)/20)*vLeft(:,1) ...
-% %         10^(DiffLevel(2)/20)*vRight(:,2)],hndl.Ramp/1000,hndl.SRate,2);
-
-    hndl.TrialStimulus = AddTemporalRamps([vLeft(:,1) vRight(:,2)],...
-        hndl.Ramp/1000,hndl.SRate,2);
-
-    hndl.TrialStimulus(:,1) = (hndl.TrialStimulus(:,1) ./ ...
-        rms(hndl.TrialStimulus(:,1))) * hndl.CalLeft;
-    hndl.TrialStimulus(:,2) = (hndl.TrialStimulus(:,2) ./ ...
-        rms(hndl.TrialStimulus(:,2))) * hndl.CalLeft;
+        hndl.TrialStimulus(:,1) = (hndl.TrialStimulus(:,1) ./ ...
+            rms(hndl.TrialStimulus(:,1))) * hndl.CalLeft;
+        hndl.TrialStimulus(:,2) = (hndl.TrialStimulus(:,2) ./ ...
+            rms(hndl.TrialStimulus(:,2))) * hndl.CalLeft;
 
         % Play out
-%         if hndl.Plot == 0
-%             if hndl.TDT.on == 0
-                sound(hndl.TrialStimulus,hndl.SRate);
-%             else
-%                 TDTPlayBlocking(hndl.TDT,hndl.TrialStimulus,[1 2],hndl.SRate);
-%             end
-            tic; % begin response clock
-%         elseif hndl.Plot == 1
-%             figure(43);
-%             plot(1/hndl.SRate:1/hndl.SRate:length(hndl.TrialStimulus)/hndl.SRate,hndl.TrialStimulus);
-%         end
+        sound(hndl.TrialStimulus,hndl.SRate);
+        tic; % begin response clock
         set(gcf, 'UserData', hndl);
     end
 end
