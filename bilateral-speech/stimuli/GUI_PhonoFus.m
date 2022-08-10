@@ -173,19 +173,6 @@ uicontrol('Style','text','String','Variables', ...
     'backgroundcolor',hndl.colors.red, ...
     'Units', 'normalized', 'Position',[0.05,0.925,0.9,0.05]);
 
-% uicontrol('Style','text','String','Task: ', ...
-%     'Parent',hndl.Fig.Variables,...
-%     'FontSize', 10, ...
-%     'FontWeight', 'bold', ...
-%     'Units', 'normalized', 'Position',[0.05,0.85,0.15,0.05]);
-% hndl.Fig.Task = uicontrol('Style','popupmenu', ...
-%     'Parent',hndl.Fig.Variables,...
-%     'FontSize', 10, ...
-%     'String','L/R Discrim|Lateralization', ...
-%     'backgroundcolor',hndl.colors.white, ...
-%     'callback',@SetParams, ...
-%     'Units', 'normalized', 'Position',[0.25,0.85,0.2,0.05]);
-
 uicontrol('Style','text','String','N Reps:', ...
     'Parent',hndl.Fig.Variables,...
     'FontWeight', 'bold', ...
@@ -583,23 +570,13 @@ function Calc_Results(~,~,~)
                     %% BOTH
                     accuracy = (subdat(:,2) == subdat(:,5)) & (subdat(:,4)==subdat(:,7)); %| (dat(:,2) == dat(:,6));
                     %% EITHER
-% %                     accuracy = (subdat(:,2) == subdat(:,5)) | (subdat(:,4)==subdat(:,7)); %| (dat(:,2) == dat(:,6));
-                    
-
-
-                        acc = sum(accuracy)/length(accuracy);
+                    acc = sum(accuracy)/length(accuracy);
                 else % Two words
                     %% BOTH
                     accuracy = ((subdat(:,2) == subdat(:,5)) & (subdat(:,3) == subdat(:,6))) ... 
                         | ((subdat(:,2) == subdat(:,6)) & (subdat(:,3) == subdat(:,5)));
                     %% EITHER
-% %                     accuracy = ((subdat(:,2) == subdat(:,5)) | (subdat(:,3) == subdat(:,6))) ... 
-% %                         | ((subdat(:,2) == subdat(:,6)) | (subdat(:,3) == subdat(:,5)));
-                    
-
-
-
-                        acc = sum(accuracy)/length(accuracy);
+                    acc = sum(accuracy)/length(accuracy);
                 end
 
                 if ii == 2
@@ -617,7 +594,6 @@ function Calc_Results(~,~,~)
                 text(0.5,0.5,sprintf('n = %d',length(accuracy)));
                 text(0.5,0.4,sprintf('p = %0.3f',acc));
 
-        %         nwords = unique(dat(:,4));
                 accuracy = (subdat(:,4) == subdat(:,7));
                 acc = sum(accuracy)/length(accuracy);
 
@@ -631,62 +607,4 @@ function Calc_Results(~,~,~)
     end
     disp(uvocs);
 
-end
-
-function UseTDT(varargin)
-
-    hndl = get(gcf, 'UserData');
-    myfig = gcf;
-    
-    if get(hndl.Fig.UseTDT,'value')
-        % initialize the TDT
-        hndl.TDT = TDTInit(hndl.SRate);
-        % set PA5 attenuation
-%         % Sound booth
-%         atten = [25.2 26.5]; % dB
-        atten = [15.2-hndl.CalLeft 16.5-hndl.CalRight]; % dB
-        % Matrix room - booth headphones
-%         atten = [21.5 20.9]; % dB
-        % Matrix room - matrix room headphones
-%         atten = [14.5 14.2];  65 dB
-        
-        TDTSetPA5Atten(hndl.TDT,atten);
-        hndl.TDT.on = 1;
-    else
-        % close TDT hardware
-        TDTClose(hndl.TDT);
-        hndl.TDT.on = 0;
-    end
-    
-    set(myfig, 'UserData', hndl);
-
-end
-
-function Calibration(~,~,~)
-%     table=0; % Set equal to 1 if want to create stimulus using frequency table
-%         left=1; % Set equal to 1/0 if want to check left/right ear while NOT using frequency table
-    hndl = get(gcf, 'UserData');
-    tmp=TDTInit(hndl.SRate);
-    % set PA5 attenuation
-    % 39.4 34.1 40.5 37.4 34.0 39.0
-    % 41.0 34.1 41.7 41.4 35.6 42.4 - 6/29/27 - SA & CS
-    atten = [100 24.2]; % dB
-    TDTSetPA5Atten(tmp,atten);
-%     dur=15;
-%     if table==1
-%         MakeAMStim(1,tmp,hndl.SRate,dur,hndl.Task23FreqParams,25,25,[4000 0],[4000 0],[4 5 6 7]);
-%     else
-%         t=0:1/hndl.SRate:dur;
-%         sig=sin(4000*2*pi*t);%sin(7260*2*pi*t);
-%         %sig=(1/max(sig))*sig;
-%         if left==1
-%             calib=[sig;zeros(1,length(sig))];
-%         else
-%             calib=[zeros(1,length(sig));sig];
-%         end
-%         calib=calib';
-        cal = [resample(hndl.CalibStim,hndl.SRate,44100) resample(hndl.CalibStim,hndl.SRate,44100)];
-        TDTPlayBlocking(tmp,[hndl.CalibStim hndl.CalibStim],[1 2],hndl.SRate);
-%     end
-    TDTClose(tmp);
 end
