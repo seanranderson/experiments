@@ -41,22 +41,16 @@ if ~start
     
     % WORD TO NUMBER MAP
     
-    hndl.PosWords = {...%'Cam','Lamb','Ram','Clam','Cram',...
-                'Bed','Led','Red','Bled','Bread',...
+    hndl.PosWords = {'Bed','Led','Red','Bled','Bread',...
                 'Pay','Lay','Ray','Play','Pray',...
                 'Go','Low','Row','Glow','Grow'};
             
     hndl.StimulusPath = '../Stimuli/';
     hndl.CalibStim = audioread('../Stimuli/PinkNoise.wav');
     hndl.RMSCalib = rms(hndl.CalibStim)^2;
-% %     hndl.CalLeft = 0;
-% %     hndl.CalRight = 0;
-% %     hndl.CalLeft = rms((hndl.CalibStim ./ rms(hndl.CalibStim)) * 9.976e-3) ^ 2; % factor at end determined by calibration in booth 07xx21
-% %     hndl.CalRight = rms((hndl.CalibStim ./ rms(hndl.CalibStim)) * 1.145e-2) ^ 2; % factor at end determined by calibration in booth 07xx21
     hndl.Ramp = 10;
     hndl.npanel = 5;
     set(gcf, 'UserData', hndl);
-%     UseTDT(1);
     hndl = get(gcf, 'UserData');
     
 else
@@ -103,13 +97,6 @@ end
 %% set up experimental screen
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     
-%     hndl.Fig.LeftRight = uicontrol('Style', 'checkbox', 'String', 'Monaural Right', ...
-%         'FontWeight', 'bold', ...
-%         'FontSize', 12, ...
-%         'value',0, ...
-%         'callback',@LeftRight, ...
-%         'Units', 'normalized', 'Position',[0.05,0.65,0.2,0.1]);
-
     uicontrol('Style','text','String','Choose 1 word, then press "Play". Once satisfied, click "Next".', ...
         'FontWeight', 'bold', ...
         'backgroundcolor',hndl.colors.gray,...
@@ -124,13 +111,6 @@ end
         'backgroundcolor',[1 1 1], ...
         'callback',{@Play}, ...
         'Units', 'normalized', 'Position',[0.55,0.8,0.3,0.15]);
-
-% % % %     hndl.ExpButtons.Stop = uicontrol('Style', 'pushbutton', 'String', 'Abort', ...
-% % % %         'FontWeight', 'bold', ...
-% % % %         'FontSize', 14, ...
-% % % %         'backgroundcolor',[1 0.1 0.1], ...
-% % % %         'callback',{@StopExp,0}, ...
-% % % %         'Units', 'normalized', 'Position',[0.885,0.025,0.1,0.05]);
 
     % Row 1
 
@@ -334,8 +314,6 @@ function UpdateResponse(obj,events,input)
     if length(hndl.wordList) ~= 1
         set(hndl.ExpButtons.Play,'BackgroundColor',[1 1 1]);        
         set(hndl.ExpButtons.Play,'Enable','off');
-% %     elseif hndl.nWords == 0
-% %         % Do nothing - sub has not chosen yet
     else
         set(hndl.ExpButtons.Play,'BackgroundColor',hndl.colors.green);
         set(hndl.ExpButtons.Play,'Enable','on');
@@ -356,38 +334,13 @@ end
 function Play(~,~,~)
     
     hndl = get(gcf, 'UserData');
-%        vLeft = [zeros(23695,1) zeros(23695,1)];
        vLeft = [zeros(29047,1) zeros(29047,1)];
        yRight =  audioread([hndl.StimulusPath 'Vocoded/100 depth/' ...
             sprintf('%s_1_voc_16_of_16ch_LNN_e_600_comp_100_s_0.wav',...
             hndl.PosWords{hndl.wordList(1)})]);
-        vRight = [yRight yRight];
-% % % %         vRight = hndl.RMSCalib/rms(vRight(logical(vRight(:,1)~=0),1))^2 * vRight;
-
-% %             % Added 070721
-% %                 % Calibrates to stim used to calibrate setup - based on TDT
-% %                 % and probably need to change
-% %             vLeft = [yRight yRight];
-% %             vLeft = hndl.RMSCalib/rms(vLeft(logical(vLeft(:,1)~=0),1))^2 * vLeft;
-            
-% %         end
-    
-    vLeft = resample(vLeft,hndl.SRate,44100);
-    vRight = resample(vRight,hndl.SRate,44100);
-    
-% %     % Level adjustments based on calibrations
-% %     DiffLevel = [20*log10(hndl.CalLeft) - 20*log10(rms(vLeft(:,1))^2) ...
-% %         20*log10(hndl.CalRight) - 20*log10(rms(vRight(:,2))^2)];
-% %     if all(vLeft == 0)
-% %         hndl.TrialStimulus = AddTemporalRamps([vLeft(:,1) ...
-% %             10^(DiffLevel(2)/20)*vRight(:,2)],hndl.Ramp/1000,hndl.SRate,2);
-% %     elseif all(vRight == 0)
-% %         hndl.TrialStimulus = AddTemporalRamps([10^(DiffLevel(1)/20)*vLeft(:,1) ...
-% %             vRight(:,2)],hndl.Ramp/1000,hndl.SRate,2);
-% %     else
-% %         hndl.TrialStimulus = AddTemporalRamps([10^(DiffLevel(1)/20)*vLeft(:,1) ...
-% %             10^(DiffLevel(2)/20)*vRight(:,2)],hndl.Ramp/1000,hndl.SRate,2);
-% %     end
+        vRight = [yRight yRight];    
+        vLeft = resample(vLeft,hndl.SRate,44100);
+        vRight = resample(vRight,hndl.SRate,44100);
     
     if all(vLeft == 0)
         hndl.TrialStimulus = AddTemporalRamps([vLeft(:,1) vRight(:,2)],...
@@ -408,9 +361,6 @@ function Play(~,~,~)
             rms(hndl.TrialStimulus(:,2))) * hndl.CalLeft;
     end
     
-% % 	hndl.TrialStimulus = AddTemporalRamps([10^(hndl.CalLeft/20)*vLeft(:,1) ...
-% %         10^(hndl.CalRight/20)*vRight(:,2)],hndl.Ramp/1000,hndl.SRate,2);
-% % % %     TDTPlayBlocking(hndl.TDT,hndl.TrialStimulus,[1 2],hndl.SRate);
     sound(hndl.TrialStimulus,hndl.SRate);
     
     hndl.PlayCount = hndl.PlayCount + 1;
