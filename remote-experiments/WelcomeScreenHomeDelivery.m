@@ -1,3 +1,9 @@
+% This function executes a protocol to orient the participant to how they 
+% will receive instructions and confirm that home delivery equipment is 
+% set up correctly.
+% 
+% Sean R. Anderson - sean.hearing@gmail.com
+
 function WelcomeScreenHomeDelivery(~,~,npanel)
 
 addpath(genpath('experiment protocols'));
@@ -19,7 +25,6 @@ if ~exist('npanel','var')
     hndl.npanel = 1;
     npanel = hndl.npanel;
     hndl.colors.white=[1 1 1];
-%     hndl.colors.gray = [0.9255 0.9137 0.8471];
     hndl.colors.green = [0.5 1 0.25];
     hndl.colors.blue = [0.5 0.5 1];
     hndl.colors.red = [1 0.25 0.25];
